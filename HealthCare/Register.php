@@ -55,11 +55,11 @@ if(isset($_POST['nurse_signup'])){
 if(isset($_POST['login']))
 {
 // Getting username/ email and password
-$nurse_email=$_POST['nurse_email'];
-$nurse_password=$_POST['nurse_password'];
+$nurse_email=$_POST['nurse_email_login'];
+$nurse_password=$_POST['nurse_password_login'];
 
 // Fetch data from database on the basis of username/email and password
-$sql ="SELECT nurse_id,nurse_email,nurse_password FROM nurse
+$sql ="SELECT * FROM nurse
 WHERE (nurse_email=:nurse_email)";
     $query=  $conn2 -> prepare($sql);
     $query-> bindParam(':nurse_email', $nurse_email, PDO::PARAM_STR);
@@ -74,8 +74,6 @@ WHERE (nurse_email=:nurse_email)";
 
                if(password_verify($nurse_password, $result->nurse_password)) {
 
-                   $_SESSION['userlogin'] = $_POST['nurse_email'];
-                   $session_username= $_SESSION['userlogin'] ;
                    echo "<script> document.location = 'home.php'; </script>";
                }else{
                 $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
@@ -277,10 +275,10 @@ section .container .user .formBx {
       <div class="user signinBx">
         <div class="imgBx"><img src="5.jpg" alt="" /></div>
         <div class="formBx">
-          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" onsubmit="return false;">
+          <form method="post" action="">
             <h2>Sign In</h2>
-            <input type="text" name="nurse_email" placeholder="Email" />
-            <input type="password" name="nurse_password" placeholder="Password" />
+            <input type="text" name="nurse_email_login" placeholder="Email" />
+            <input type="password" name="nurse_password_login" placeholder="Password" />
             <input type="submit" name="login" value="Login" />
             <?php if(isset(  $message)){  echo $message; }?>
             <p class="signup">
@@ -298,9 +296,11 @@ section .container .user .formBx {
             <input type="text" name="nurse_lname" placeholder="Last Name" required/>
             <input type="text" name="healthcare_center" placeholder="Healthcare Center Name" required/>
             <input type="email" name="nurse_email" placeholder="Email Address" required/>
-            <input type="tel" name="nurse_phone" placeholder="Phone Number" required/>
-            <input type="password" name="nurse_password" placeholder="Create Password" required/>
-            <input type="password" name="nurse_confirm_password" placeholder="Confirm Password" required/>
+            <input type="tel" pattern="[0-9]{8}" name="nurse_phone" placeholder="Phone Number" title="Must contain an 8 digit phone number" required/>
+            <input type="password" name="nurse_password" placeholder="Create Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+  title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
+            <input type="password" name="nurse_confirm_password" placeholder="Confirm Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+  title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters" required/>
             <input type="submit" name="nurse_signup" value="Sign Up" />
             <p class="signup">
               Already have an account ?

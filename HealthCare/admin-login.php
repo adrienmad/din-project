@@ -1,15 +1,16 @@
 <?php
+require_once 'config.php';
 if(isset($_POST['login']))
 {
 // Getting username/ email and password
-$nurse_email=$_POST['nurse_email'];
-$nurse_password=$_POST['nurse_password'];
+$admin_email=$_POST['admin_email'];
+$admin_password=$_POST['admin_password'];
 
 // Fetch data from database on the basis of username/email and password
-$sql ="SELECT nurse_id,nurse_email,nurse_password FROM nurse
-WHERE (nurse_email=:nurse_email)";
+$sql ="SELECT * FROM admin
+WHERE (admin_email=:admin_email)";
     $query=  $conn2 -> prepare($sql);
-    $query-> bindParam(':nurse_email', $nurse_email, PDO::PARAM_STR);
+    $query-> bindParam(':admin_email', $admin_email, PDO::PARAM_STR);
     $query-> execute();
     $results=$query->fetchAll(PDO::FETCH_OBJ);
 
@@ -19,11 +20,11 @@ WHERE (nurse_email=:nurse_email)";
 
            foreach($results as $result){
 
-               if(password_verify($nurse_password, $result->nurse_password)) {
+               if(password_verify($admin_password, $result->admin_password)) {
 
-                   $_SESSION['userlogin'] = $_POST['nurse_email'];
-                   $session_username= $_SESSION['userlogin'] ;
-                   echo "<script> document.location = 'home.php'; </script>";
+                  //  $_SESSION['userlogin'] = $_POST['nurse_email'];
+                  //  $session_username= $_SESSION['userlogin'] ;
+                   echo "<script> document.location = 'http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=healthcare&table=admin&pos=0'; </script>";
                }else{
                 $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
             }
@@ -224,10 +225,11 @@ section .container .user .formBx {
       <div class="user signinBx">
         <div class="imgBx"><img src="5.jpg" alt="" /></div>
         <div class="formBx">
-          <form action="" onsubmit="return false;">
+          <form method="post" action="">
+          <?php if(isset(  $message)){  echo $message; }?>
             <h2>Admin Login</h2>
-            <input type="text" name="nurse_email" placeholder="Email" />
-            <input type="password" name="nurse_password" placeholder="Password" />
+            <input type="email" name="admin_email" placeholder="Email" />
+            <input type="password" name="admin_password" placeholder="Password" />
             <input type="submit" name="login" value="Login" />
             <p>Please note that to have admin access you will need to contact the service provider on +230 57967346 to create your access</p>
           </form>
@@ -236,10 +238,10 @@ section .container .user .formBx {
     </div>
   </section>
   <script type="text/javascript">
-  const toggleForm = () => {
-  const container = document.querySelector('.container');
-  container.classList.toggle('active');
-};
+//   const toggleForm = () => {
+//   const container = document.querySelector('.container');
+//   container.classList.toggle('active');
+// };
   </script>
 </body>
 </html>

@@ -262,59 +262,60 @@ form .gender__details .category {
     <div class="user__details">
       <div class="input__box">
         <span class="details">First Name</span>
-        <input type="text" placeholder="" name="patient_fname" required>
+        <input type="text" placeholder="First name" name="patient_fname" required>
       </div>
       <div class="input__box">
         <span class="details">Last Name</span>
-        <input type="text" placeholder="" name="patient_lname" required>
+        <input type="text" placeholder="Last Name" name="patient_lname" required>
       </div>
       <div class="input__box">
         <span class="details">Email</span>
-        <input type="email" placeholder="" name="patient_email" required>
+        <input type="email" placeholder="Email Address" name="patient_email" required>
       </div>
       <div class="input__box">
         <span class="details">Phone Number</span>
-        <input type="tel" placeholder="" name="patient_phone" required>
+        <input type="tel" pattern="[0-9]{8}" title="Must contain an 8 digit phone number" placeholder="Phone Number" name="patient_phone" required>
+        <small>Format: 57896543</small>
       </div>
       <div class="input__box">
         <span class="details">Age</span>
-        <input type="number" placeholder="" name="patient_age" required>
+        <input type="number" min="1" placeholder="Age" name="patient_age" required>
       </div>
       <div class="input__box">
         <span class="details">address</span>
-        <input type="text" placeholder="" name="patient_address" required>
+        <input type="text" placeholder="Street Address" name="patient_address" required>
       </div>
       <div class="input__box">
         <span class="details">Pregnancies</span>
-        <input type="text" placeholder="" name="pregnancies" required>
+        <input type="number" placeholder="0"  name="pregnancies" required>
       </div>
       <div class="input__box">
         <span class="details">BMI</span>
-        <input type="text" placeholder="" name="bmi" required>
+        <input type="number" placeholder="0.0" min="0"  step="0.01" pattern="^\d+(?:\.\d{1,2})?$" title="Can take whole number or decimal" name="bmi" required>
       </div>
       <div class="input__box">
         <span class="details">Skin Thickness</span>
-        <input type="text" placeholder="" name="skin_thickness" required>
+        <input type="number" placeholder="0.0" min="0"  step="0.01" pattern="^\d+(?:\.\d{1,2})?$" title="Can take whole number or decimal" name="skin_thickness" required>
       </div>
       <div class="input__box">
         <span class="details">Glucose</span>
-        <input type="text" placeholder="" name="glucose" required>
+        <input type="number" placeholder="0.0" min="0"  step="0.01" pattern="^\d+(?:\.\d{1,2})?$" title="Can take whole number or decimal" name="glucose" required>
       </div>
       <div class="input__box">
         <span class="details">Blood Pressure</span>
-        <input type="text" placeholder="" name="blood_pressure" required>
+        <input type="number" placeholder="0.0" min="0"  step="0.01" pattern="^\d+(?:\.\d{1,2})?$" title="Can take whole number or decimal" name="blood_pressure" required>
       </div>
       <div class="input__box">
         <span class="details">Insulin</span>
-        <input type="text" placeholder="" name="insuline" required>
+        <input type="number" placeholder="0" placeholder="" name="insuline" required>
       </div>
       <div class="input__box">
         <span class="details">Diabetes Pedigree Function</span>
-        <input type="text" placeholder="" name="diabeties_pedigree_function" required>
+        <input type="number" min="0"  step="0.01" pattern="^\d+(?:\.\d{1,2})?$" placeholder="0" title="Can take whole number or decimal" name="diabeties_pedigree_function" required>
       </div>
       <div class="input__box">
         <span class="details">Outcome</span>
-        <input type="text" placeholder="" name="outcome" required>
+        <input type="number" placeholder="0" name="outcome" required>
       </div>
       <div class="input__box">
         <span class="details">Date</span>
@@ -322,13 +323,13 @@ form .gender__details .category {
       </div>
       <div class="input__box">
         <span class="details">status</span>
-        <input type="text" placeholder="" name="status" required>
+        <input type="text" placeholder="Active/Unactive" name="status" required>
       </div>
     </div>
     <div class="gender__details">
-      <input type="radio" name="patient_gender" id="dot-1">
-      <input type="radio" name="patient_gender" id="dot-2">
-      <input type="radio" name="patient_gender" id="dot-3">
+      <input type="radio" name="patient_gender" value="Male" id="dot-1">
+      <input type="radio" name="patient_gender" value="Female" id="dot-2">
+      <input type="radio" name="patient_gender" value="Prefer not to say" id="dot-3">
       <span class="gender__title">Gender</span>
       <div class="category">
         <label for="dot-1">
