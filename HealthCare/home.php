@@ -6,6 +6,8 @@ require_once('config.php');
 // for signup nurse
 if(isset($_POST['submit_patient_details'])){
 
+
+  //store input value form into variables
   $patient_fname = $_POST['patient_fname'];
   $patient_lname = $_POST['patient_lname'];
   $patient_age = $_POST['patient_age'];
@@ -24,13 +26,13 @@ if(isset($_POST['submit_patient_details'])){
   $status = $_POST['status'];
   $patient_gender = $_POST['patient_gender'];
 
-
+//sql to fetch if patient email already exist 
   $sql = "SELECT * FROM patient where patient_email = '$patient_email'";
       $query = $conn2 -> prepare($sql);
       $query->execute();
-      // $results=$query->fetchAll(PDO::FETCH_OBJ);
 
       $count = $query->rowCount();
+      //if greater than 0, this email address already exist
       if($count > 0)
       {
         echo "<script>alert('Already existed')</script>";
@@ -40,6 +42,7 @@ if(isset($_POST['submit_patient_details'])){
            $stmt = $conn2->prepare("INSERT INTO  patient (patient_fname, patient_lname, patient_age, patient_phone, patient_address, patient_email, pregnancies, bmi, skin_thickness, glucose, blood_pressure, insuline, diabeties_pedigree_function, outcome, date_form_filled, status, patient_gender) VALUES
            (:patient_fname, :patient_lname, :patient_age, :patient_phone, :patient_address, :patient_email, :pregnancies, :bmi, :skin_thickness, :glucose, :blood_pressure, :insuline, :diabeties_pedigree_function, :outcome, :date_form_filled, :status, :patient_gender)");
 
+          //attach bind parameters to the variable form inputs before inserting into the database
              $stmt->bindParam(':patient_fname', $patient_fname, PDO::PARAM_STR);
              $stmt->bindParam(':patient_lname', $patient_lname, PDO::PARAM_STR);
              $stmt->bindParam(':patient_age', $patient_age, PDO::PARAM_STR);
@@ -59,15 +62,6 @@ if(isset($_POST['submit_patient_details'])){
              $stmt->bindParam(':patient_gender', $patient_gender, PDO::PARAM_STR);
              $stmt->execute();
 
-             $lastInsertPatientID = $conn2->lastInsertId();
-
-			// if($lastInsertPatientID){
-      //   $stmt1 = $conn2->prepare("INSERT INTO  tbl_image_candidate (candidate_id) VALUES (:candidate_id)");
-      //
-      //     $stmt1->bindParam(':candidate_id', $lastInsertPatientID, PDO::PARAM_STR);
-      //     $stmt1->execute();
-      // }
-        // end insert in table nurse
       }
 
 }

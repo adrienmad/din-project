@@ -1,11 +1,11 @@
 <?php
 // for this part of the code we will use php for the regristration -- use php to send the data from from to db
-session_start();
 require_once('config.php');
 
 // for signup nurse
 if(isset($_POST['nurse_signup'])){
-
+ 
+  //store signup name into variables
   $nurse_fname = $_POST['nurse_fname'];
   $nurse_lname = $_POST['nurse_lname'];
   $nurse_email = $_POST['nurse_email'];
@@ -15,6 +15,7 @@ if(isset($_POST['nurse_signup'])){
   $nurse_confirm_password = $_POST['nurse_confirm_password'];
   $nurse_password =password_hash($nurse_password, PASSWORD_DEFAULT);
 
+  //check if this email address already exist for tbl nurse
   $sql = "SELECT * FROM nurse where nurse_email = '$nurse_email'";
       $query = $conn2 -> prepare($sql);
       $query->execute();
@@ -23,13 +24,15 @@ if(isset($_POST['nurse_signup'])){
       $count = $query->rowCount();
       if($count > 0)
       {
+        //if count is greater than 0, it means this email address already exisit in database
         echo "<script>alert('Already existed')</script>";
       }
       else {
-        // insert on table nurse
+        // insert the form values into the tbl nurse
            $stmt = $conn2->prepare("INSERT INTO  nurse (nurse_fname, nurse_lname, nurse_email, nurse_phone, healthcare_center, nurse_password, nurse_confirm_password) VALUES
            (:nurse_fname, :nurse_lname, :nurse_email, :nurse_phone, :healthcare_center, :nurse_password, :nurse_confirm_password)");
 
+            //use bind parameter to secure to inputs value going into the database
              $stmt->bindParam(':nurse_fname', $nurse_fname, PDO::PARAM_STR);
              $stmt->bindParam(':nurse_lname', $nurse_lname, PDO::PARAM_STR);
              $stmt->bindParam(':nurse_email', $nurse_email, PDO::PARAM_STR);
@@ -37,28 +40,20 @@ if(isset($_POST['nurse_signup'])){
              $stmt->bindParam(':healthcare_center', $healthcare_center, PDO::PARAM_STR);
              $stmt->bindParam(':nurse_password', $nurse_password, PDO::PARAM_STR);
              $stmt->bindParam(':nurse_confirm_password', $nurse_confirm_password, PDO::PARAM_STR);
+             //execute the query
              $stmt->execute();
-
-             $lastInsertNurseID = $conn2->lastInsertId();
-
-			// if($lastInsertNurseID){
-      //   $stmt1 = $conn2->prepare("INSERT INTO  tbl_image_candidate (candidate_id) VALUES (:candidate_id)");
-      //
-      //     $stmt1->bindParam(':candidate_id', $lastInsertNurseID, PDO::PARAM_STR);
-      //     $stmt1->execute();
-      // }
-        // end insert in table nurse
       }
 
 }
 // -------------------------------------------------------------------------------------------------------------------------------------------------------------------
 if(isset($_POST['login']))
 {
-// Getting username/ email and password
+// Getting username/ email and password for nurse to login
 $nurse_email=$_POST['nurse_email_login'];
 $nurse_password=$_POST['nurse_password_login'];
 
 // Fetch data from database on the basis of username/email and password
+//sql to check if this nurse email address has already created an account
 $sql ="SELECT * FROM nurse
 WHERE (nurse_email=:nurse_email)";
     $query=  $conn2 -> prepare($sql);
@@ -66,21 +61,22 @@ WHERE (nurse_email=:nurse_email)";
     $query-> execute();
     $results=$query->fetchAll(PDO::FETCH_OBJ);
 
-    //if user exists in database, create session and send to dashboard
+    //if user exists in database
        if($query->rowCount() > 0)
        {
 
            foreach($results as $result){
-
+            // password verify with the user input and with the database password value
                if(password_verify($nurse_password, $result->nurse_password)) {
-
+                  //if it match, redirect to home
                    echo "<script> document.location = 'home.php'; </script>";
                }else{
+                //if it does not match, print error
                 $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
             }
         }
-    //   echo "<script> document.location = 'dashboard.php'; </script>";
     } else{
+      //print error if this email does not exist in the table nurse
         $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
     }
 

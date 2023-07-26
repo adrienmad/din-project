@@ -14,22 +14,19 @@ WHERE (admin_email=:admin_email)";
     $query-> execute();
     $results=$query->fetchAll(PDO::FETCH_OBJ);
 
-    //if user exists in database, create session and send to dashboard
+    //if user exists in database
        if($query->rowCount() > 0)
        {
 
            foreach($results as $result){
 
                if(password_verify($admin_password, $result->admin_password)) {
-
-                  //  $_SESSION['userlogin'] = $_POST['nurse_email'];
-                  //  $session_username= $_SESSION['userlogin'] ;
+                //check if password match with the password hash into database
                    echo "<script> document.location = 'http://localhost/phpmyadmin/index.php?route=/sql&server=1&db=healthcare&table=admin&pos=0'; </script>";
                }else{
                 $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
             }
         }
-    //   echo "<script> document.location = 'dashboard.php'; </script>";
     } else{
         $message = '<div  class="text-center" style ="padding: 20px; background-color: #f44336; color: white;" >WRONG CREDENTIALS </div>';
     }
